@@ -17,13 +17,14 @@ public class p2pServer {
 		List<Integer> resourcePort = new ArrayList<>();
 		List<Integer> timeoutVal = new ArrayList<>();
 		
+		System.out.println("# SERVER STARTED\n");
 		while (true) {
 			try {
 				// recebe datagrama
 				packet = new DatagramPacket(resource, resource.length);
-				socket.setSoTimeout(500);
+				socket.setSoTimeout(1000);
 				socket.receive(packet);
-				System.out.print("Recebi!");
+				System.out.print("\n[Package received] ");
 								
 				// processa o que foi recebido, adicionando a uma lista
 				content = new String(packet.getData(), 0, packet.getLength());
@@ -73,7 +74,7 @@ public class p2pServer {
 				}
 				
 				if (vars[0].equals("heartbeat") && vars.length > 1) {
-					System.out.print("\nheartbeat: " + vars[1]);
+					System.out.print("heartbeat from " + vars[1]);
 					for (int i = 0; i < resourceList.size(); i++) {
 						if (resourceList.get(i).equals(vars[1]))
 							timeoutVal.set(i, 15);
