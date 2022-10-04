@@ -50,6 +50,7 @@ public class p2pServer {
 						timeoutVal.add(15);		/* 500ms * 15 = 7.5s (enough for 5s heartbeat) */
 						
 						response = "OK".getBytes();
+						System.out.print(vars[1]+ " joined");
 					} else {
 						response = "NOT OK".getBytes();
 					}
@@ -59,6 +60,7 @@ public class p2pServer {
 				}
 				
 				if (vars[0].equals("list") && vars.length > 1) {
+					System.out.print("list request from " + vars[1]);
 					for (int j = 0; j <= resourceList.size(); j++) {
 						
 						if (resourceList.get(j).equals(vars[1])) {
@@ -86,7 +88,7 @@ public class p2pServer {
 				for (int i = 0; i < timeoutVal.size(); i++) {
 					timeoutVal.set(i, timeoutVal.get(i) - 1);
 					if (timeoutVal.get(i) == 0) {
-						System.out.println("\nuser " + resourceList.get(i) + " is dead.");
+						System.out.println("\n# User " + resourceList.get(i) + " is dead.");
 						resourceList.remove(i);
 						resourceAddr.remove(i);
 						resourcePort.remove(i);
