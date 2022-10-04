@@ -81,32 +81,35 @@ public class p2pServer {
 				}
 
 
-					System.out.print("vars[0]: " + vars[0]);
+				//System.out.print("vars[0]: " + vars[0]);
 				if (vars[0].equals("up")) {
 					System.out.print("adding resourses from " + vars[1]);
-
-					resourceList.put(vars[1], vars[2]); // vars[1]: client, vars[2]: hash
-
-					String data = new String(" resource added from" + vars[1].toString());
+					
+					resourceList.put(vars[2], vars[1]); // vars[1]: client, vars[2]: hash
+					System.out.println("@@  resourceList get vars[1]: "+resourceList.get(vars[1]));
+					
+					String data = new String("resource added from " + vars[1].toString());
 					response = data.getBytes();
 					
 					packet = new DatagramPacket(response, response.length, addr, port);
 					socket.send(packet);
-					
-					break;	
 				}
 
 				if (vars[0].equals("search")) {
 					System.out.print("search request from " + vars[1]);
-
-					for (int i = 0; i < resourceList.size(); i++) {
-						String data = new String("resource: "+resourceList.get(i));
+					
+					int counter = 0;
+					for (String key: resourceList.keySet()) {
+						String hash = resourceList.get(key);
+						String data = new String("resource: "+hash);
 						response = data.getBytes();
 						
 						packet = new DatagramPacket(response, response.length, addr, port);
 						socket.send(packet);
+						
+						counter++;
 					}
-					break;	
+					System.out.println("@@@@  Total de tens na lista de recursos " + counter);
 				}
 				
 				if (vars[0].equals("heartbeat") && vars.length > 1) {
