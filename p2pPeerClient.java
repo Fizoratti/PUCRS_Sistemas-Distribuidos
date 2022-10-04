@@ -22,26 +22,28 @@ public class p2pPeerClient extends Thread {
 
 		while (true) {
 
-			System.out.println("\n<list/peer> <message> <ip>");
-			System.out.println("Example: list user <server_ip>");
-			System.out.println("Example: peer \"hello_world!\" <peer_ip> <port>");
+			//System.out.println("\n<list/peer> <message> <ip>");
+			System.out.println("\n# COMMANDS: ");
+			System.out.println("# Example: list <your_nickname> <server_ip>");
+			System.out.println("# Example: peer \"A message to the peer.\" <peer_ip> <peer_port>");
+			System.out.print("> ");
 			try {
 				str = obj.readLine();
 				String vars[] = str.split("\\s");
 				addr = InetAddress.getByName(vars[2]);
-				String str2 = vars[0] + " " + vars[1];
+				String str2 = vars[0] + " " + vars[1];  // vars[0]: list vars[1]: nickname
 				resource = str2.getBytes();
-				if (vars.length == 4) {
+				if (vars.length == 4) { // if the input is peer "msg" 172.168.1.5 4000
 					System.out.println("Sending message to peer on port " + vars[3]);
 					peer_port = Integer.parseInt(vars[3]);
 				} else {
-					peer_port = 9000;
+					peer_port = 9000; // in this case, its not peer, its the server port
 				}
 			} catch (IOException e) {
 			}
 			
 			try {
-				packet = new DatagramPacket(resource, resource.length, addr, peer_port);
+				packet = new DatagramPacket(resource, resource.length, addr, peer_port); // peer port is 9000 sending to server ip
 				socket.send(packet);
 				
 				while (true) {
