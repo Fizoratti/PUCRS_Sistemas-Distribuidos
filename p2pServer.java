@@ -17,7 +17,8 @@ public class p2pServer {
 		List<Integer> resourcePort = new ArrayList<>();
 		List<Integer> timeoutVal = new ArrayList<>();
 		
-		System.out.println("# SERVER STARTED\n");
+		System.out.println("# Server application started.");
+
 		while (true) {
 			try {
 				// recebe datagrama

@@ -9,11 +9,15 @@ public class p2pPeerClient extends Thread {
 	protected byte[] resource = new byte[1024];
 	protected byte[] response = new byte[1024];
 	protected int port, peer_port;
+	protected String serverAddress;
+	protected String nickname;
 
 	public p2pPeerClient(String[] args) throws IOException {
 		port = Integer.parseInt(args[2]) + 101;
 		// cria um socket datagrama
 		socket = new DatagramSocket(port);
+		serverAddress = args[0];
+		nickname = args[3];
 	}
 
 	public void run() {
@@ -24,14 +28,14 @@ public class p2pPeerClient extends Thread {
 
 			//System.out.println("\n<list/peer> <message> <ip>");
 			System.out.println("\n# COMMANDS: ");
-			System.out.println("# Example: list <your_nickname> <server_ip>");
+			System.out.println("# Example: list <server_ip>");
 			System.out.println("# Example: peer \"A message to the peer.\" <peer_ip> <peer_port>");
 			System.out.print("> ");
 			try {
 				str = obj.readLine();
 				String vars[] = str.split("\\s");
-				addr = InetAddress.getByName(vars[2]);
-				String str2 = vars[0] + " " + vars[1];  // vars[0]: list vars[1]: nickname
+				addr = InetAddress.getByName(serverAddress);
+				String str2 = vars[0] + " " + nickname;  // vars[0]: list ~vars[1]: nickname~
 				resource = str2.getBytes();
 				if (vars.length == 4) { // if the input is peer "msg" 172.168.1.5 4000
 					System.out.println("Sending message to peer on port " + vars[3]);
@@ -55,7 +59,7 @@ public class p2pPeerClient extends Thread {
 						
 						// mostra a resposta
 						String resposta = new String(packet.getData(), 0, packet.getLength());
-						System.out.println("recebido: " + resposta);
+						System.out.println("[Package received] " + resposta);
 					} catch (IOException e) {
 						break;
 					}

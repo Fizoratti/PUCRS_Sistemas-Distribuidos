@@ -37,3 +37,15 @@ java App <peer|server>
     java App server <localhost.server-port>
   
 ```
+
+```bash
+Current usage:
+java p2pPeer <server> <message> <localport>
+
+New usage:
+java p2p <mode> <port> <nickname> join <server-ip>
+java p2p peer 3000 notebook join 192.168.1.5 
+
+java p2p <mode> <port>
+java p2p server 9000
+```

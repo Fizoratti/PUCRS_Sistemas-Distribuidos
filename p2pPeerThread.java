@@ -22,7 +22,6 @@ public class p2pPeerThread extends Thread {
 	}
 
 	public void run() {
-		
 		try {
 			// envia um packet
 			DatagramPacket packet = new DatagramPacket(resource, resource.length, addr, 9000); // port 900 is the server port
@@ -40,7 +39,7 @@ public class p2pPeerThread extends Thread {
 				
 				// mostra a resposta
 				String data = new String(packet.getData(), 0, packet.getLength());
-				System.out.println("recebido: " + data);
+				System.out.println("[Package received] " + data);
 				
 			} catch (IOException e) {
 //				if (!vars[0].equals("wait")) {
