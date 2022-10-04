@@ -29,8 +29,8 @@ public class p2pPeerClient extends Thread {
 
 			//System.out.println("\n<list/peer> <message> <ip>");
 			System.out.println("\n# COMMANDS: ");
-			System.out.println("# Example: list");
-			System.out.println("# Example: peer message \"Message body.\" <remote_peer_ip> <remote_peer_port>");
+			// System.out.println("# Example: list, peer message, up, search");
+			// System.out.println("# Example: peer message \"Message body.\" <remote_peer_ip> <remote_peer_port>");
 			System.out.print("> ");
 			try {
 				str = obj.readLine();

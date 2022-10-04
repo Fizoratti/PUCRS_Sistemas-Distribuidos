@@ -17,7 +17,7 @@ public class p2pServer {
 		List<Integer> clientPort = new ArrayList<>();
 		List<Integer> timeoutVal = new ArrayList<>();
 
-		Map<String, String> resourceList = new HashMap<>();  // <client, hash>
+		Set<Resource> resourceList = new HashSet<>();  // <client, hash>
 		
 		System.out.println("# Server application started.");
 
@@ -67,7 +67,7 @@ public class p2pServer {
 					System.out.print("list request from " + vars[1]);
 					for (int j = 0; j <= clientList.size(); j++) {
 						
-						if (clientList.get(j).equals(vars[1])) {
+						// if (clientList.get(j).equals(vars[1])) {
 							for (int i = 0; i < clientList.size(); i++) {
 								String data = new String(clientList.get(i) + " " + clientAddr.get(i).toString() + " " + clientPort.get(i).toString());
 								response = data.getBytes();
@@ -76,7 +76,7 @@ public class p2pServer {
 								socket.send(packet);
 							}
 							break;
-						}
+						// }
 					}
 				}
 
@@ -84,11 +84,13 @@ public class p2pServer {
 				//System.out.print("vars[0]: " + vars[0]);
 				if (vars[0].equals("up")) {
 					System.out.print("adding resourses from " + vars[1]);
+
+					Resource res = new Resource("File", vars[2], addr, packet.getPort());
 					
-					resourceList.put(vars[2], vars[1]); // vars[1]: client, vars[2]: hash
-					System.out.println("@@  resourceList get vars[1]: "+resourceList.get(vars[1]));
+					resourceList.add(res); // vars[1]: client, vars[2]: hash
+					System.out.println("resource "+res.name+" ("+res.hash+") added from "+res.address);
 					
-					String data = new String("resource added from " + vars[1].toString());
+					String data = new String("resource "+res.hash+" added from " + vars[1]);
 					response = data.getBytes();
 					
 					packet = new DatagramPacket(response, response.length, addr, port);
@@ -99,9 +101,9 @@ public class p2pServer {
 					System.out.print("search request from " + vars[1]);
 					
 					int counter = 0;
-					for (String key: resourceList.keySet()) {
-						String hash = resourceList.get(key);
-						String data = new String("resource: "+hash);
+					for (Resource res: resourceList) {
+						String hash = res.hash;
+						String data = new String("resource: "+res.toString());
 						response = data.getBytes();
 						
 						packet = new DatagramPacket(response, response.length, addr, port);
@@ -109,7 +111,16 @@ public class p2pServer {
 						
 						counter++;
 					}
-					System.out.println("@@@@  Total de tens na lista de recursos " + counter);
+
+					System.out.println("\n@@@@  Total de tens na lista de recursos " + counter);
+
+					if(counter==0) {
+						String data = new String("The resource list is empty");
+						response = data.getBytes();
+						packet = new DatagramPacket(response, response.length, addr, port);
+						socket.send(packet);
+					}
+					
 				}
 				
 				if (vars[0].equals("heartbeat") && vars.length > 1) {
@@ -125,6 +136,22 @@ public class p2pServer {
 					timeoutVal.set(i, timeoutVal.get(i) - 1);
 					if (timeoutVal.get(i) == 0) {
 						System.out.println("\n# User " + clientList.get(i) + " is dead.");
+						
+						for(Resource res: resourceList) {
+
+							System.out.println("rESOURCE TOsTRING() "+res.toString());
+							
+							System.out.println("clientAddr "+clientAddr.get(i));
+							System.out.println("clientPort "+clientPort.get(i));
+							System.out.println("resourceAddr "+res.address);
+							System.out.println("resourceport "+res.port);
+
+							if(Objects.equals(clientAddr.get(i), res.address)) {  // && clientPort.get(i) == res.port
+								resourceList.remove(res);
+								System.out.println("resource "+res.name+" hash:"+res.hash+" was removed");
+							}
+						}
+
 						clientList.remove(i);
 						clientAddr.remove(i);
 						clientPort.remove(i);

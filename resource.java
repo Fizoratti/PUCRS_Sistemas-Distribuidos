@@ -1,12 +1,19 @@
 import java.net.InetAddress;
 
-public class resource {
+public class Resource {
     String name;
     String hash;
     InetAddress address;
     Integer port;
+
+    Resource(String name, String hash, InetAddress address, Integer port) {
+        this.name = name;
+        this.hash=hash;
+        this.address=address;
+        this.port=port;
+    }
     
     public String toString() {
-        return "| h: "+hash+" | a: "+address+" | p: "+port+" | r: ("+name+" )";
+        return name+"  (hash: "+hash+") | address: "+address+":"+port+" |";
     }
 }
