@@ -45,7 +45,7 @@ public class p2pPeerClient extends Thread {
 						break;
 
 					case "up":
-						String hash = "8f76g4";
+						String hash = vars[1];
 						String str5 = vars[0] + " " + nickname + " " + hash;  // vars[0]: up
 						System.out.println("resource body: "+str5);
 						resource = str5.getBytes();
@@ -53,7 +53,7 @@ public class p2pPeerClient extends Thread {
 						break;
 
 					case "search":
-						String str4 = vars[0];  // vars[0]: search
+						String str4 = vars[0] + " " + nickname;  // vars[0]: search
 						resource = str4.getBytes();
 						peer_port = 9000; // in this case, its not peer, its the server port
 						break;
