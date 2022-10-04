@@ -8,8 +8,8 @@ public class p2pPeer {
 		if (args.length != 3) {
 			System.out.println("Uso: java p2pPeer <server> \"<message>\" <localport>");
 			System.out.println("<message> is:");
-			System.out.println("create nickname");
-			System.out.println("list nickname");
+			System.out.println("join <nickname>");
+			System.out.println("list <nickname>");
 			System.out.println("wait");
 			return;
 		} else {

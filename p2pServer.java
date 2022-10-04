@@ -9,7 +9,7 @@ public class p2pServer {
 		int port;
 		byte[] resource = new byte[1024];
 		byte[] response = new byte[1024];
-		DatagramSocket socket = new DatagramSocket(9000);
+		DatagramSocket socket = new DatagramSocket(Integer.parseInt(args[0]));
 		DatagramPacket packet;
 		
 		List<String> resourceList = new ArrayList<>();
@@ -31,14 +31,16 @@ public class p2pServer {
 				port = packet.getPort();
 				String vars[] = content.split("\\s");
 				
-				if (vars[0].equals("create") && vars.length > 1) {
+				if (vars[0].equals("join") && vars.length > 1) {
 					int j;
 					
+					// check if resource (currently is a nickname) exists in the pool
 					for (j = 0; j < resourceList.size(); j++) {
 						if (resourceList.get(j).equals(vars[1]))
 							break;
 					}
-					
+
+					// append new resource to the resource list
 					if (j == resourceList.size()) {
 						resourceList.add(vars[1]);
 						resourceAddr.add(addr);
@@ -55,7 +57,8 @@ public class p2pServer {
 				}
 				
 				if (vars[0].equals("list") && vars.length > 1) {
-					for (int j = 0; j < resourceList.size(); j++) {
+					for (int j = 0; j <= resourceList.size(); j++) {
+						
 						if (resourceList.get(j).equals(vars[1])) {
 							for (int i = 0; i < resourceList.size(); i++) {
 								String data = new String(resourceList.get(i) + " " + resourceAddr.get(i).toString() + " " + resourcePort.get(i).toString());

@@ -14,18 +14,18 @@ public class p2pPeerThread extends Thread {
 	public p2pPeerThread(String[] args) throws IOException {
 		// envia um packet
 		resource = args[1].getBytes();
-		addr = InetAddress.getByName(args[0]);
-		port = Integer.parseInt(args[2]);
+		addr = InetAddress.getByName(args[0]); // server-ip
+		port = Integer.parseInt(args[2]); // client-port
 		// cria um socket datagrama
 		socket = new DatagramSocket(port);
-		vars = args[1].split("\\s");
+		vars = args[1].split("\\s"); // resource
 	}
 
 	public void run() {
 		
 		try {
 			// envia um packet
-			DatagramPacket packet = new DatagramPacket(resource, resource.length, addr, 9000);
+			DatagramPacket packet = new DatagramPacket(resource, resource.length, addr, 9000); // port 900 is the server port
 			socket.send(packet);
 		} catch (IOException e) {
 			socket.close();
